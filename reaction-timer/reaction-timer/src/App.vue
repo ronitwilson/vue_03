@@ -1,8 +1,9 @@
 <template>
   <h1> Reaction timer app </h1>
   <button @click="start" :disabled="isPlaying">play</button>
+  <p v-if="isOver"> Reaction time is {{ score }} ms</p>
   <div v-if="isPlaying">
-    <Block :prop_timer="delay"></Block>
+    <Block :prop_timer_delay="delay" @game_over="game_over_methond"></Block>
   </div>
 </template>
 
@@ -15,14 +16,24 @@ export default {
   data() {
     return {
       isPlaying: false,
-      delay: null
+      delay: null,
+      score: null,
+      isOver: null
     }
   },
   methods: {
     start() {
       this.isPlaying = true
-      this.delay = 2000 * Math.random() * 5000
+      this.score = null
+      this.isOver = null
+      this.delay = 2000 + Math.random() * 5000
       console.log("delay is ", this.delay)
+    },
+    game_over_methond(reactionTime) {
+      console.log("Game over")
+      this.isPlaying=false
+      this.score = reactionTime
+      this.isOver = true
     }
   }
 }
